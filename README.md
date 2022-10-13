@@ -17,7 +17,11 @@
 </div>
 <h1 align="center">Current Features </h1>
 
+- New Image for background on load
+
 - Currently only Google works
+
+
 
 - Yahoo shows the top 10-15 images before stopping
 
