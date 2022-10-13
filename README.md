@@ -12,6 +12,9 @@
 </div>
 <br>
 
+<div>
+<img width="1649" alt="Screenshot 2022-10-14 at 12 39 18 am" src="https://user-images.githubusercontent.com/76784461/195730976-1a5742d2-1265-40b8-93cb-2cf1f9d90e9e.png">
+</div>
 <h1 align="center">Current Features </h1>
 
 - Currently only Google works
