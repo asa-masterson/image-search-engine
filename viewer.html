@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View images from internal api</title>
+    <link type="text/css" rel="stylesheet" href="main.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap" rel="stylesheet">
@@ -39,17 +40,93 @@
 </head>
 <body style="text-align: center; font-family: 'Bungee Spice', cursive;">
 
-<input id="searchBar" onchange="createImages()" style="width: 50%" placeholder="What would you like to see?"></input>
-<input type="number" value="5" id="amount" min="1" max="100">
-<select id="engine">
-    <option value="google">Google</option>
-    <option value="bing">Bing</option>
-    <option value="duckduckgo">DuckDuckGo</option>
-    <option value="yahoo">Yahoo!</option>
-  </select>
-<p></p>
+<div id="bg" style="background-image: url('https://picsum.photos/1920/1080.jpg')">
+<div >
     
+<input id="searchBar" onchange="createImages()" placeholder="What would you like to see?"></input>
+
+</div>
+<br><br>
+<center><nav role="navigation" >
+    <div id="menuToggle" >
+        
+      <input type="checkbox" />
+    
+      <span style="mix-blend-mode: difference"></span>
+      <span style="mix-blend-mode: difference"></span>
+      <span style="mix-blend-mode: difference"></span>
+    
+    <ul id="menu" >
+        <div style="margin-left: -40px;">
+        <br><br>
+        <p>Filters</p>
+        <select id="engine">
+            <option value="mix">Search Engine</option>
+            <option value="mix">Mix</option>
+            <option value="google">Google</option>
+            <option value="bing">Bing</option>
+            <option value="duckduckgo">DuckDuckGo</option>
+            <option value="yahoo">Yahoo!</option>
+        </select>
+        <br><br>
+        <select id="imgtype">
+            <option value="df">Image Type</option>
+            <option value="df">Default</option>
+            <option value="tb">Transparent Background</option>
+            <option value="wl">Wallpaper</option>
+            <option value="mwl">Mobile Wallpaper</option>
+        </select>
+        <input type="number" value="5" id="amount" min="1" max="100">
+    </div>
+      </ul>
+    </div>
+  </nav></center>
+  <p></p>
+
 <div id="NewImages"></div>
 
+</div>
+
 </body>
+<!-- <script>
+    function getImageLightness(imageSrc,callback) {
+        var img = document.createElement("img");
+        img.src = imageSrc;
+        img.style.display = "none";
+        document.body.appendChild(img);
+    
+        var colorSum = 0;
+    
+        img.onload = function() {
+            // create canvas
+            var canvas = document.createElement("canvas");
+            canvas.width = this.width;
+            canvas.height = this.height;
+    
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(this,0,0);
+    
+            var imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+            var data = imageData.data;
+            var r,g,b,avg;
+    
+            for(var x = 0, len = data.length; x < len; x+=4) {
+                r = data[x];
+                g = data[x+1];
+                b = data[x+2];
+    
+                avg = Math.floor((r+g+b)/3);
+                colorSum += avg;
+            }
+    
+            var brightness = Math.floor(colorSum / (this.width*this.height));
+            callback(brightness);
+        }
+    }
+    const back =document.getElementById('bg')
+    console.log(back.style.backgroundImage.slice(4, -1).replace(/"/g, ""))
+    getImageLightness(back.style.backgroundImage.slice(4, -1).replace(/"/g, ""),function(brightness){
+        console.log(brightness);
+    });
+</script> -->
 </html>

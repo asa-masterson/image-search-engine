@@ -16,7 +16,7 @@ def get_images_google(name, num):
     chromeOptions = Options()
     #chromeOptions.add_argument("--kiosk") # open chrome as fullscreen
     chromeOptions.add_argument("--incognito") # open chrome in incognito
-    chromeOptions.add_argument("--headless") # open chrome in headless mode
+    # chromeOptions.add_argument("--headless") # open chrome in headless mode
     driver = webdriver.Chrome('./chromedriver', chrome_options=chromeOptions)
 
     driver.get("https://images.google.com") # loads google images
