@@ -4,24 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View images from internal api</title>
+    <title>Image Atheneum</title>
     <link type="text/css" rel="stylesheet" href="main.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap" rel="stylesheet">
     <script>
+        function setGradually(func,delay,step) {
+            func(delay);
+            setTimeout(() => {
+                if (Math.abs(step)<=delay)
+                    delay += step;
+                setGradually(func,delay,step);
+            },delay)
+        }
         async function createImages() {
             try {
                 console.log("Grabbing images...")
-                document.getElementById('NewImages').innerHTML = "<h1>Grabbing images...</h1>"
+                document.getElementById('NewImages').innerHTML = "<h1>Grabbing images...</h1> <div class='loader4'><span></span><span></span><span></span><span></span></div>"
                 engine = document.getElementById("engine").value
                 amount = document.getElementById("amount").value
                 search = document.getElementById("searchBar").value
+                //document.getElementById("topsection").style.height ="1%"
+                setGradually(v => {
+                    if (v > 1){
+                    document.getElementById("ts").style.height =v+"%"
+                    }
+                    else{
+                        return
+                    }
+                },40,-1);
+                setGradually(v => {
+                    if (v > 10){
+                       document.getElementById("bg").style.filter= " brightness("+v+"%)"
+                    }
+                    else{
+                        return
+                    }
+                },100,-2);
+
                 query = engine + "///" + amount + "///" + search
                 url="http://127.0.0.1:8080/" + query
                 const response = await fetch(url);
                 var images = await response.json();
-                document.getElementById('NewImages').innerHTML = "<h1>You are viewing "+amount+" images of<br>"+search+"<br>on "+engine+"</h1>"
+                //document.getElementById('NewImages').innerHTML = "<h1>You are viewing "+amount+" images of<br>"+search+"<br>on "+engine+"</h1>"
+                document.getElementById('NewImages').innerHTML =""
                 console.log(images);
 
                 for (var image of images) {
@@ -39,13 +66,14 @@
     </script>
 </head>
 <body style="text-align: center; font-family: 'Bungee Spice', cursive;">
-
+<section style="z-index: 20;">
 <div id="bg" style="background-image: url('https://picsum.photos/1920/1080.jpg')">
-<div >
+    
+    <div id="ts"class="topsection"></div>
     
 <input id="searchBar" onchange="createImages()" placeholder="What would you like to see?"></input>
 
-</div>
+
 <br><br>
 <center><nav role="navigation" >
     <div id="menuToggle" >
@@ -61,7 +89,7 @@
         <br><br>
         <p>Filters</p>
         <select id="engine">
-            <option value="mix">Search Engine</option>
+            <option value="google">Search Engine</option>
             <option value="mix">Mix</option>
             <option value="google">Google</option>
             <option value="bing">Bing</option>
@@ -76,16 +104,20 @@
             <option value="wl">Wallpaper</option>
             <option value="mwl">Mobile Wallpaper</option>
         </select>
-        <input type="number" value="5" id="amount" min="1" max="100">
+        <input type="number" value="60" id="amount" min="1" max="100">
     </div>
       </ul>
     </div>
   </nav></center>
   <p></p>
-
-<div id="NewImages"></div>
-
 </div>
+</section>
+<section style="position:relative;margin-top:10%;z-index: 0;">
+<div id="NewImages" style="z-index: 20;width:auto;height:auto">
+    
+    <!-- <a href="https://i.ytimg.com/vi/O-xJs-fNCyI/maxresdefault.jpg"><img src="https://i.ytimg.com/vi/O-xJs-fNCyI/maxresdefault.jpg" height="200"></a> -->
+</div>
+</section>
 
 </body>
 <!-- <script>

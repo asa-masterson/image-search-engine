@@ -4,6 +4,8 @@ from urllib.parse import unquote_plus # to convert posted strings into universal
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import NoSuchElementException # added for error handling
 from time import sleep
 import json
@@ -11,27 +13,31 @@ from bs4 import BeautifulSoup # because bing is awkward with all its iframes and
 
 no_img = "https://cdn.dribbble.com/users/760295/screenshots/4433975/media/03494b209a1511a61868ced337b97931.png?compress=1&resize=400x300"
 # image to be shown when there are no more to be retrived
+driver = None
 
 def get_images_google(name, num):
-    chromeOptions = Options()
-    #chromeOptions.add_argument("--kiosk") # open chrome as fullscreen
-    chromeOptions.add_argument("--incognito") # open chrome in incognito
-    # chromeOptions.add_argument("--headless") # open chrome in headless mode
-    driver = webdriver.Chrome('./chromedriver', chrome_options=chromeOptions)
+    global driver
+    if driver == None:
+        chromeOptions = Options()
+        #chromeOptions.add_argument("--kiosk") # open chrome as fullscreen
+        chromeOptions.add_argument("--incognito") # open chrome in incognito
+        chromeOptions.add_argument("--headless") # open chrome in headless mode
+        # driver = webdriver.Chrome('./chromedriver', chrome_options=chromeOptions)
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
 
-    driver.get("https://images.google.com") # loads google images
-    driver.find_element('xpath','//*[@id="L2AGLb"]/div').click() # presses accept all
+        driver.get("https://images.google.com") # loads google images
+        driver.find_element('xpath','//*[@id="L2AGLb"]/div').click() # presses accept all
 
-    search_bar = driver.find_element("name", "q") # finds the search bar
-    search_bar.clear()
-    search_bar.send_keys(unquote_plus(name)) # searches for there query
-    search_bar.send_keys(Keys.RETURN)
-    #driver.get_screenshot_as_file('./tmp.png') # takes a screenshot
+        search_bar = driver.find_element("name", "q") # finds the search bar
+        search_bar.clear()
+        search_bar.send_keys(unquote_plus(name)) # searches for there query
+        search_bar.send_keys(Keys.RETURN)
+        #driver.get_screenshot_as_file('./tmp.png') # takes a screenshot
 
     images = []
     x=0
     y=1
-    while x < num:
+    while len(images) < num:
         count = 0
         if y % 25 == 0:
             y += 1
@@ -42,7 +48,7 @@ def get_images_google(name, num):
                 img_src = image.get_attribute("src")
                 if img_src[:10] == "data:image" and count<=10: # keeps checking image unless its been a second
                     count += 1
-                    sleep(0.1)
+                    # sleep(0.1)
                 elif count>10: # move to the next image cos it took too long
                     y += 1
                     break
@@ -59,15 +65,15 @@ def get_images_google(name, num):
     print(images)
     #sleep(5)
 
-    driver.close() # closes the browser
-    return images # converts to json for compatability
+    # driver.close() # closes the browser
+    return images,count # converts to json for compatability
 
 def get_images_bing(name, num): # ** UNDER CONSTRUCTION **
     chromeOptions = Options()
     #chromeOptions.add_argument("--kiosk") # open chrome as fullscreen
     chromeOptions.add_argument("--incognito") # open chrome in incognito
     #chromeOptions.add_argument("--headless") # open chrome in headless mode
-    driver = webdriver.Chrome('./chromedriver', chrome_options=chromeOptions)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
 
     driver.get("https://images.bing.com") # loads bing images
 
@@ -127,7 +133,7 @@ def get_images_yahoo(name, num): # Only shows few top images - 10-15 - idk why
     #chromeOptions.add_argument("--kiosk") # open chrome as fullscreen
     chromeOptions.add_argument("--incognito") # open chrome in incognito
     chromeOptions.add_argument("--headless") # open chrome in headless mode
-    driver = webdriver.Chrome('./chromedriver', chrome_options=chromeOptions)
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
 
     driver.get("https://images.yahoo.com") # loads yahoo images
     driver.find_element('xpath','//*[@id="consent-page"]/div/div/div/form/div[2]/div[2]/button').click() # presses accept all
@@ -198,8 +204,9 @@ class MyServer(BaseHTTPRequestHandler):
             else:
                 query = path[pos+3:]
                 if engine == "google":
-                    images = get_images_google(query, amount)
+                    images,count = get_images_google(query, amount)
                     self.wfile.write(bytes(str(images), "utf-8"))
+                    
                 elif engine == "bing":
                     pass
                     # Not Selenium Friendly >:(
