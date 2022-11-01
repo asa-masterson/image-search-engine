@@ -9,39 +9,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-        function setGradually(func,delay,step) {
-            func(delay);
-            setTimeout(() => {
-                if (Math.abs(step)<=delay)
-                    delay += step;
-                setGradually(func,delay,step);
-            },delay)
-        }
         async function createImages() {
             try {
+                $(".topsection").toggleClass("up");
+                $(".bg").toggleClass("up");
                 console.log("Grabbing images...")
                 document.getElementById('NewImages').innerHTML = "<h1>Grabbing images...</h1> <div class='loader4'><span></span><span></span><span></span><span></span></div>"
                 engine = document.getElementById("engine").value
                 amount = document.getElementById("amount").value
                 search = document.getElementById("searchBar").value
-                //document.getElementById("topsection").style.height ="1%"
-                setGradually(v => {
-                    if (v > 1){
-                    document.getElementById("ts").style.height =v+"%"
-                    }
-                    else{
-                        return
-                    }
-                },40,-1);
-                setGradually(v => {
-                    if (v > 10){
-                       document.getElementById("bg").style.filter= " brightness("+v+"%)"
-                    }
-                    else{
-                        return
-                    }
-                },100,-2);
 
                 query = engine + "///" + amount + "///" + search
                 url="http://127.0.0.1:8080/" + query
@@ -63,13 +41,18 @@
             }
 
         }
+        
     </script>
 </head>
 <body style="text-align: center; font-family: 'Bungee Spice', cursive;">
-<section style="z-index: 20;">
-<div id="bg" style="background-image: url('https://picsum.photos/1920/1080.jpg')">
+
+<div class="bg" style="background-image: url('https://picsum.photos/1920/1080.jpg')"></div>
+
     
-    <div id="ts"class="topsection"></div>
+<section class="topsection" >
+
+    
+    <div id="ts"></div>
     
 <input id="searchBar" onchange="createImages()" placeholder="What would you like to see?"></input>
 
@@ -110,55 +93,14 @@
     </div>
   </nav></center>
   <p></p>
-</div>
+
 </section>
-<section style="position:relative;margin-top:10%;z-index: 0;">
-<div id="NewImages" style="z-index: 20;width:auto;height:auto">
+<section id="main-sec">
+<div id="NewImages" style="z-index: 20;width:auto;height:auto;">
     
     <!-- <a href="https://i.ytimg.com/vi/O-xJs-fNCyI/maxresdefault.jpg"><img src="https://i.ytimg.com/vi/O-xJs-fNCyI/maxresdefault.jpg" height="200"></a> -->
 </div>
 </section>
 
 </body>
-<!-- <script>
-    function getImageLightness(imageSrc,callback) {
-        var img = document.createElement("img");
-        img.src = imageSrc;
-        img.style.display = "none";
-        document.body.appendChild(img);
-    
-        var colorSum = 0;
-    
-        img.onload = function() {
-            // create canvas
-            var canvas = document.createElement("canvas");
-            canvas.width = this.width;
-            canvas.height = this.height;
-    
-            var ctx = canvas.getContext("2d");
-            ctx.drawImage(this,0,0);
-    
-            var imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
-            var data = imageData.data;
-            var r,g,b,avg;
-    
-            for(var x = 0, len = data.length; x < len; x+=4) {
-                r = data[x];
-                g = data[x+1];
-                b = data[x+2];
-    
-                avg = Math.floor((r+g+b)/3);
-                colorSum += avg;
-            }
-    
-            var brightness = Math.floor(colorSum / (this.width*this.height));
-            callback(brightness);
-        }
-    }
-    const back =document.getElementById('bg')
-    console.log(back.style.backgroundImage.slice(4, -1).replace(/"/g, ""))
-    getImageLightness(back.style.backgroundImage.slice(4, -1).replace(/"/g, ""),function(brightness){
-        console.log(brightness);
-    });
-</script> -->
 </html>
