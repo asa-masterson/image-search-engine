@@ -3,7 +3,7 @@
 
 <div align="center">
   <a href="https://github.com/asa-masterson/sele-scraper">
-    <img width="200" height="200" alt="cas" src="https://user-images.githubusercontent.com/76784461/192902358-8423f2bf-de02-4b4a-bf27-3f50312f3f57.png">
+    <img width="200" height="200" alt="cas" src="https://user-images.githubusercontent.com/76784461/200879063-4e6363b6-084e-4275-936e-764b0ae974ec.png">
   </a>
 
 <p align="center">
