@@ -7,7 +7,7 @@
   </a>
 
 <p align="center">
-  All in one image search engine that incorporates images from Google, Bing, Yahoo and DuckDuckGo
+  All in one image search engine that incorporates images from Google, Bing, Yahoo and DuckDuckGo - and lots of filtering tools to help you find the right images you are looking for.
   </p>
 </div>
 <br>
@@ -17,11 +17,12 @@
 </div>
 <h1 align="center">Current Features </h1>
 
-- New Image for background on load
+- New Background image on load
+- Responsive design and animations
 
 - Currently only Google works
 
-
+- Filters Dont Work currently
 
 - Yahoo shows the top 10-15 images before stopping
 
