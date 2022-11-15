@@ -21,7 +21,7 @@ def get_images_google(name, num):
         chromeOptions = Options()
         #chromeOptions.add_argument("--kiosk") # open chrome as fullscreen
         chromeOptions.add_argument("--incognito") # open chrome in incognito
-        chromeOptions.add_argument("--headless") # open chrome in headless mode
+        # chromeOptions.add_argument("--headless") # open chrome in headless mode
         # driver = webdriver.Chrome('./chromedriver', chrome_options=chromeOptions)
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
 
@@ -44,19 +44,14 @@ def get_images_google(name, num):
         try:
             driver.find_element('xpath','//*[@id="islrg"]/div[1]/div[{}]'.format(y)).click() # click on top 5 images
             while True:
-                image = driver.find_element('xpath','//*[@id="Sva75c"]/div/div/div[3]/div[2]/c-wiz/div/div[1]/div[1]/div[3]/div/a/img')
+
+                image = driver.find_element('id','Sva75c')
                 img_src = image.get_attribute("src")
-                if img_src[:10] == "data:image" and count<=10: # keeps checking image unless its been a second
-                    count += 1
-                    # sleep(0.1)
-                elif count>10: # move to the next image cos it took too long
-                    y += 1
-                    break
-                else:
-                    x += 1
-                    y += 1
-                    images.append(img_src) # appends the image url to array
-                    break
+                print(img_src)
+                x += 1
+                y += 1
+                images.append(img_src) # appends the image url to array
+                break
         except NoSuchElementException:
             images.append(no_img)
             x += 1
@@ -230,5 +225,3 @@ if __name__ == "__main__":
 
     webServer.server_close()
     print("Server stopped.")
-
-
