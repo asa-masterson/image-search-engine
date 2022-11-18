@@ -33,9 +33,10 @@
                 for (var image of images) {
                     var img = document.createElement('img');
                     img.src = image;
-                    img.height = 200
+                    img.innerHTML = "<center><div class='img-text'>Go To Website<br>Download Full Image</div></center>";
+                    // img.height = 200
                     document.getElementById('NewImages').appendChild(img);
-                    await new Promise(resolve => setTimeout(resolve, 100));
+                    await new Promise(resolve => setTimeout(resolve, 30));
                 }
             } catch(error) {
                 document.getElementById('NewImages').innerHTML = "<h1>An error occurred while trying to fetch: <br>'"+error.message+"'</h1>"

@@ -21,7 +21,7 @@ h1{
 }
 #main-sec{
 	position:relative;
-	margin-top:15vh;
+	margin-top:20vh;
 	z-index: 0;
 }
 #NewImages{
@@ -30,17 +30,35 @@ h1{
 }
 #NewImages img{
 	z-index: 0;
+	height: 200px;
 	padding: 6px ;
 	border-radius: 20px;
 	-webkit-filter: blur(0px); 
     filter: blur(0px);
 	transition: all 0.5s ease;
 }
+.img-text{
+	
+	position: relative;
+	font-family: "Avenir Next", "Avenir", sans-serif;
+	font-size: 200px;
+	height: 200px;
+	top:-200px ;
+	color: white;
+	z-index: 100;
+	opacity: 1;
+}
 #NewImages img:hover{
 	z-index: -1;
 	-webkit-filter: blur(20px); 
     filter: blur(20px);
+	
 }
+/* #NewImages img:hover.img-text{
+		
+		opacity: 1;
+	} */
+
 .bg{
 	position: fixed;
 	width: 100%;

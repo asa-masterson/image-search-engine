@@ -21,7 +21,7 @@ def get_images_google(name, num):
         chromeOptions = Options()
         #chromeOptions.add_argument("--kiosk") # open chrome as fullscreen
         chromeOptions.add_argument("--incognito") # open chrome in incognito
-        # chromeOptions.add_argument("--headless") # open chrome in headless mode
+        chromeOptions.add_argument("--headless") # open chrome in headless mode
         # driver = webdriver.Chrome('./chromedriver', chrome_options=chromeOptions)
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
 
@@ -37,6 +37,7 @@ def get_images_google(name, num):
     images = []
     x=0
     y=1
+    im = 3
     while len(images) < num:
         count = 0
         if y % 25 == 0:
@@ -45,22 +46,24 @@ def get_images_google(name, num):
             driver.find_element('xpath','//*[@id="islrg"]/div[1]/div[{}]'.format(y)).click() # click on top 5 images
             while True:
 
-                image = driver.find_element('id','Sva75c')
+                image = driver.find_element('xpath','//*[@id="Sva75c"]/div[{}]/div/div/div[3]/div[2]/c-wiz/div[2]/div[1]/div[1]/div[2]/div/a/img'.format(im))
                 img_src = image.get_attribute("src")
-                print(img_src)
                 x += 1
+                im+=1
                 y += 1
-                images.append(img_src) # appends the image url to array
+                if img_src != "" or img_src !=None:
+                    images.append(img_src) # appends the image url to array
                 break
         except NoSuchElementException:
-            images.append(no_img)
+            # images.append(no_img)
+            num+=1
             x += 1
 
     images = json.dumps(images)
-    print(images)
+    # print(images)
     #sleep(5)
 
-    # driver.close() # closes the browser
+    driver.close() # closes the browser
     return images,count # converts to json for compatability
 
 def get_images_bing(name, num): # ** UNDER CONSTRUCTION **
@@ -117,7 +120,7 @@ def get_images_bing(name, num): # ** UNDER CONSTRUCTION **
           #  x += 1
 
     images = json.dumps(images)
-    print(images)
+    # print(images)
     #sleep(5)
 
     driver.close() # closes the browser
