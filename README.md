@@ -12,8 +12,11 @@
 </div>
 <br>
 
-<div>
-<img width="1649" alt="Screenshot 2022-10-14 at 12 39 18 am" src="https://user-images.githubusercontent.com/76784461/195730976-1a5742d2-1265-40b8-93cb-2cf1f9d90e9e.png">
+<div align="center">
+<img width="85%" src="https://user-images.githubusercontent.com/76784461/195730976-1a5742d2-1265-40b8-93cb-2cf1f9d90e9e.png">
+
+<img width="80%"  src="https://user-images.githubusercontent.com/76784461/202863475-34d44aec-813e-4ba3-b09b-f76ab30d59ed.gif">
+
 </div>
 <h1 align="center">Current Features </h1>
 
