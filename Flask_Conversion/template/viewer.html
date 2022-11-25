@@ -30,15 +30,16 @@
                         search: search,
                     },
                     success: function (response) {
-                        console.log(response)
                         var images = JSON.parse(response)
                         document.getElementById('NewImages').innerHTML =""
                         for (var image of images) {
+                            if (image.includes("data:image/gif") == false){
                             var img = document.createElement('img');
                             img.src = image;
                             img.innerHTML = "<center><div class='img-text'>Go To Website<br>Download Full Image</div></center>";
                             // img.height = 200
                             document.getElementById('NewImages').appendChild(img);
+                            }
                         }
                     },
                     error: function (response) {
@@ -46,31 +47,81 @@
                     }
                 });
 
-                // $.post( "/", {
-                //     obj: [engine,amount,search]
-                // });
-
-                // query = engine + "///" + amount + "///" + search
-                // url="http://127.0.0.1:8080/" + query
-                // const response = await fetch(url);
-                // var images = await response.json();
-                //document.getElementById('NewImages').innerHTML = "<h1>You are viewing "+amount+" images of<br>"+search+"<br>on "+engine+"</h1>"
-                document.getElementById('NewImages').innerHTML =""
-                // console.log(images);
-
-                for (var image of images) {
-                    var img = document.createElement('img');
-                    img.src = image;
-                    img.innerHTML = "<center><div class='img-text'>Go To Website<br>Download Full Image</div></center>";
-                    // img.height = 200
-                    document.getElementById('NewImages').appendChild(img);
-                    await new Promise(resolve => setTimeout(resolve, 30));
-                }
+                
+        
             } catch(error) {
+                document.getElementById('NewImages').innerHTML = "<h1>Grabbing images...</h1> <div class='loader4'><span></span><span></span><span></span><span></span></div>"
                 console.log("we trying")
+                
             }
 
         }
+        
+        async function infiscroll(last) {
+            try {
+                
+                console.log("Grabbing images...")
+                engine = document.getElementById("engine").value
+                amount = document.getElementById("amount").value
+                search = document.getElementById("searchBar").value
+                $.ajax({
+                    url: '/ ',
+                    type: 'POST',
+                    data: {
+                        engine: engine,
+                        amount: amount,
+                        search: search,
+                    },
+                    success: function (response) {
+                        var images = JSON.parse(response)
+                        for (var image of images) {
+                            if (image.includes("data:image/gif") == false){
+                            var img = document.createElement('img');
+                            img.src = image;
+                            img.innerHTML = "<center><div class='img-text'>Go To Website<br>Download Full Image</div></center>";
+                            // img.height = 200
+                            document.getElementById('NewImages').appendChild(img);
+                            }
+                        }
+                        last = true
+                    },
+                    error: function (response) {
+                        document.getElementById('NewImages').innerHTML = "<h1>An error occurred while trying to fetch: <br>'"+response+"'</h1>"
+                    }
+                });
+
+                
+        
+            } catch(error) {
+               
+                console.log("we trying")
+                
+            }
+            last = true
+
+
+        }
+
+        document.addEventListener('DOMContentLoaded', function(e) {
+            var last = true
+            document.addEventListener('scroll', function(e) {
+                console.log(last)
+                let documentHeight = document.getElementById('main-sec').scrollHeight;
+                let currentScroll = window.scrollY + window.innerHeight;
+                let modifier = 400; 
+                if(currentScroll + modifier > documentHeight) {
+                    if (last){
+                    console.log('You are at the bottom!')
+                    last = false
+                    infiscroll(last)
+                        
+                   
+                    }
+                    
+                }
+            })
+            })
+
         
     </script>
 </head>

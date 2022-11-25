@@ -14,31 +14,33 @@ app = Flask(__name__, template_folder='template', static_folder='style')
 
 @app.route('/', methods=['GET','POST'])
 def basic():
+    global pos,before,driver
     if request.method == 'POST':
         engine = request.form['engine']
         num = int(request.form['amount'])
         name = request.form['search']
-        print(engine)
-        print(num)
         print(name)
-        
-        chromeOptions = Options()
-        chromeOptions.add_argument("--incognito") # open chrome in incognito
-        chromeOptions.add_argument("--headless") # open chrome in headless mode
-        
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
-
-        driver.get("https://images.google.com") # loads google images
-        driver.find_element('xpath','//*[@id="L2AGLb"]/div').click() # presses accept all
-
-        search_bar = driver.find_element("name", "q") # finds the search bar
-        search_bar.clear()
-        search_bar.send_keys(unquote_plus(name)) 
-        search_bar.send_keys(Keys.RETURN)
+        print(before)
+        if name.upper() == before.upper():
+            x=pos[0]
+            y=pos[1]
+            im = pos[2]
+        else:
+            
+            x=1
+            y=1 
+            im = 3
+            pos = (x,y,im)
+            before = name
+            driver.get("https://images.google.com") # loads google images
+            driver.find_element('xpath','//*[@id="L2AGLb"]/div').click() # presses accept all
+            search_bar = driver.find_element("name", "q") # finds the search bar
+            search_bar.clear()
+            search_bar.send_keys(unquote_plus(name)) 
+            search_bar.send_keys(Keys.RETURN)
+        print(x,y,im)
         images = []
-        x=0
-        y=1
-        im = 3
+        
         while len(images) < num:
             count = 0
             if y % 25 == 0:
@@ -56,15 +58,23 @@ def basic():
                         images.append(img_src) # appends the image url to array
                     break
             except NoSuchElementException:
-                # images.append(no_img)
                 num+=1
                 x += 1
-        print(images)
+        pos = (x,y,im)
+        before = name
         images = json.dumps(images)
 
-        driver.close() # closes the browser
+        # driver.close( ) # closes the browser
         return images # converts to json for compatability
     return render_template('viewer.html')
 
 if __name__=='__main__':
+    chromeOptions = Options()
+    chromeOptions.add_argument("--incognito") # open chrome in incognito
+    chromeOptions.add_argument("--headless") # open chrome in headless mode
+    
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
+
+    pos = (1,1,3)
+    before = ""
     app.run(debug = True)

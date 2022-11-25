@@ -21,7 +21,7 @@ h1{
 }
 #main-sec{
 	position:relative;
-	margin-top:20vh;
+	margin-top:15vh;
 	z-index: 0;
 }
 #NewImages{
@@ -32,6 +32,10 @@ h1{
 	z-index: 0;
 	height: 200px;
 	padding: 6px ;
+	padding-top: 3px;
+	padding-right: 6px;
+	padding-bottom: 3px;
+	padding-left: 6px;
 	border-radius: 20px;
 	-webkit-filter: blur(0px); 
     filter: blur(0px);
