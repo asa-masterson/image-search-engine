@@ -12,15 +12,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
+        
+        
         async function createImages() {
+            var search = document.getElementById("searchBar").value
+            if (search != "" || search != " "){
             try {
                 $(".topsection").addClass("up");
                 $(".bg").addClass("up");
                 console.log("Grabbing images...")
                 document.getElementById('NewImages').innerHTML = "<h1>Grabbing images...</h1> <div class='loader4'><span></span><span></span><span></span><span></span></div>"
                 engine = document.getElementById("engine").value
+                filter = document.getElementById("imgtype").value
                 amount = document.getElementById("amount").value
-                search = document.getElementById("searchBar").value
+                
                 $.ajax({
                     url: '/ ',
                     type: 'POST',
@@ -28,6 +33,7 @@
                         engine: engine,
                         amount: amount,
                         search: search,
+                        filter:filter,
                     },
                     success: function (response) {
                         var images = JSON.parse(response)
@@ -41,6 +47,13 @@
                             document.getElementById('NewImages').appendChild(img);
                             }
                         }
+                        var more = document.createElement('button');
+                        more.setAttribute("id", "loadcontent");
+                        document.getElementById('NewImages').appendChild(more)
+                        var more =document.getElementById('loadcontent')
+                        more.outerHTML = '<br id="del"><br id="del"><center id="del"><button id="loadcontent" onclick="infiscroll()">Show me more</button></center><br id="del"><br id="del">'
+                       
+                        
                     },
                     error: function (response) {
                         document.getElementById('NewImages').innerHTML = "<h1>An error occurred while trying to fetch: <br>'"+response+"'</h1>"
@@ -54,14 +67,19 @@
                 console.log("we trying")
                 
             }
-
+            }
         }
         
-        async function infiscroll(last) {
+        async function infiscroll() {
             try {
-                
+                document.getElementById('del').remove()
+                document.getElementById('del').remove()
+                document.getElementById('del').remove()
+                document.getElementById('del').remove()
+                document.getElementById('del').remove()
                 console.log("Grabbing images...")
                 engine = document.getElementById("engine").value
+                filter = document.getElementById("imgtype").value
                 amount = document.getElementById("amount").value
                 search = document.getElementById("searchBar").value
                 $.ajax({
@@ -71,6 +89,7 @@
                         engine: engine,
                         amount: amount,
                         search: search,
+                        filter:filter,
                     },
                     success: function (response) {
                         var images = JSON.parse(response)
@@ -83,7 +102,12 @@
                             document.getElementById('NewImages').appendChild(img);
                             }
                         }
-                        last = true
+                        var more = document.createElement('button');
+                        more.setAttribute("id", "loadcontent");
+                        document.getElementById('NewImages').appendChild(more)
+                        var more =document.getElementById('loadcontent')
+                        more.outerHTML = '<br id="del"><br id="del"><center id="del"><button id="loadcontent" onclick="infiscroll()">Show me more</button></center><br id="del"><br id="del">'
+                       
                     },
                     error: function (response) {
                         document.getElementById('NewImages').innerHTML = "<h1>An error occurred while trying to fetch: <br>'"+response+"'</h1>"
@@ -97,30 +121,10 @@
                 console.log("we trying")
                 
             }
-            last = true
+
 
 
         }
-
-        document.addEventListener('DOMContentLoaded', function(e) {
-            var last = true
-            document.addEventListener('scroll', function(e) {
-                console.log(last)
-                let documentHeight = document.getElementById('main-sec').scrollHeight;
-                let currentScroll = window.scrollY + window.innerHeight;
-                let modifier = 400; 
-                if(currentScroll + modifier > documentHeight) {
-                    if (last){
-                    console.log('You are at the bottom!')
-                    last = false
-                    infiscroll(last)
-                        
-                   
-                    }
-                    
-                }
-            })
-            })
 
         
     </script>
@@ -134,8 +138,8 @@
 
     
     <div id="ts"></div>
-    
-<input id="searchBar" onchange="createImages()" placeholder="What would you like to see?"></input>
+
+<input id="searchBar"  placeholder="What would you like to see?"><button id="searchbutton" onclick="createImages() " ><img src="style/icon.png" width="100%"></button></input>
 
 
 <br><br>
@@ -182,6 +186,18 @@
     <!-- <a href="https://i.ytimg.com/vi/O-xJs-fNCyI/maxresdefault.jpg"><img src="https://i.ytimg.com/vi/O-xJs-fNCyI/maxresdefault.jpg" height="200"></a> -->
 </div>
 </section>
+<script>
+    $("#searchBar").on('keyup', function (event) {
+
+if (event.keyCode === 13) {
+    search = document.getElementById("searchBar").value
+
+    if (search != "" || search != " "){
+        createImages()
+    }
+}
+});
+</script>
 
 </body>
 </html>

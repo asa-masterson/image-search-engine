@@ -17,11 +17,11 @@ def basic():
     global pos,before,driver
     if request.method == 'POST':
         engine = request.form['engine']
+        filter = request.form['filter']
         num = int(request.form['amount'])
         name = request.form['search']
-        print(name)
-        print(before)
-        if name.upper() == before.upper():
+        space = 0
+        if name.upper() == before.upper() and driver:
             x=pos[0]
             y=pos[1]
             im = pos[2]
@@ -32,14 +32,22 @@ def basic():
             im = 3
             pos = (x,y,im)
             before = name
+            driver.close()
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
             driver.get("https://images.google.com") # loads google images
             driver.find_element('xpath','//*[@id="L2AGLb"]/div').click() # presses accept all
+            
+                
             search_bar = driver.find_element("name", "q") # finds the search bar
             search_bar.clear()
             search_bar.send_keys(unquote_plus(name)) 
             search_bar.send_keys(Keys.RETURN)
-        print(x,y,im)
         images = []
+        if filter == "tb":
+            driver.find_element('xpath','//*[@id="yDmH0d"]/div[2]/c-wiz/div[1]/div/div[1]/div[2]/div[2]/div').click()
+            driver.find_element('xpath','//*[@id="yDmH0d"]/div[2]/c-wiz/div[2]/div[2]/c-wiz[1]/div/div/div[1]/div/div[2]/div').click()
+            driver.find_element('xpath','//*[@id="yDmH0d"]/div[2]/c-wiz/div[2]/div[2]/c-wiz[1]/div/div/div[3]/div/a[3]/div').click()
+            space = 0.4
         
         while len(images) < num:
             count = 0
@@ -48,9 +56,13 @@ def basic():
             try:
                 driver.find_element('xpath','//*[@id="islrg"]/div[1]/div[{}]'.format(y)).click() # click on top 5 images
                 while True:
-
+                    sleep(space)
                     image = driver.find_element('xpath','//*[@id="Sva75c"]/div[{}]/div/div/div[3]/div[2]/c-wiz/div[2]/div[1]/div[1]/div[2]/div/a/img'.format(im))
                     img_src = image.get_attribute("src")
+                    if filter == "tb":
+                        print(img_src[-4:])
+                        if img_src[-4:] != ".png":
+                            num +=1
                     x += 1
                     im+=1
                     y += 1
@@ -60,6 +72,7 @@ def basic():
             except NoSuchElementException:
                 num+=1
                 x += 1
+                sleep(0.3)
         pos = (x,y,im)
         before = name
         images = json.dumps(images)
@@ -72,8 +85,8 @@ if __name__=='__main__':
     chromeOptions = Options()
     chromeOptions.add_argument("--incognito") # open chrome in incognito
     chromeOptions.add_argument("--headless") # open chrome in headless mode
-    
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chromeOptions)
+   
 
     pos = (1,1,3)
     before = ""

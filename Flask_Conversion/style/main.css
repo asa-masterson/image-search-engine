@@ -89,6 +89,29 @@ h1{
 .topsection.up {
 	margin-top:1%;
 }
+
+#loadcontent{
+	font-family: "Avenir Next", "Avenir", sans-serif;
+	font-size: 300%;
+	color:white;
+	text-align: center; 
+	border-radius:20px;
+	padding:12px 24px 12px 24px;
+	cursor:pointer;
+	background: rgba(24, 24, 24, 0.27);
+	border: 0;
+	border-radius: 16px;
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
+	justify-content: center;
+	z-index:30;
+	transition: all 0.5s ease;
+}
+#loadcontent:hover{
+	transition: background-color 1s ease;
+	background-color: #7fff7f;
+  }
 #searchBar{
 	position: relative;
 	
@@ -109,6 +132,19 @@ h1{
 	-webkit-backdrop-filter: blur(20px);
 	justify-content: center;
 	z-index:30;
+	left:45px;
+	
+}
+#searchbutton{
+	position: relative;
+	height: 100px;
+	width: 100px;
+	right:60px;
+	top: 28px;
+	background: rgba(24, 24, 24, 0);
+	z-index: 30;
+	border: 0;
+
 	
 }
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
@@ -268,10 +304,18 @@ transform: none;
 transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
 			opacity 0.7s cubic-bezier(0.00001,0.00001,0.00001,0.1);
 }
-@media all and ( max-width: 600px ) {
+@media all and ( max-width: 1100px ) {
+	#NewImages img{
+		z-index: 0;
+		height: 150px;
+	}
+#searchbutton{
+	display: none;
+}
 #searchBar {
 	width: 90%;
 	font-size: 200%;
+	left:0px;
 	/* margin-top: 50%; */
 	/* margin-top: 50%; */
 }
@@ -280,6 +324,21 @@ transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
 	width: 80%;
 }
 
+}
+@media all and ( max-width: 1400px ) {
+	#searchbutton{
+		top:35px;
+	}
+	#searchBar {
+		width: 90%;
+		font-size: 250%;
+		
+		/* margin-top: 50%; */
+		/* margin-top: 50%; */
+	}
+	#menu{
+		width: 80%;
+	}
 }
 .loader4 {
 	width:70px;
